@@ -1,13 +1,12 @@
 const pompom = document.getElementById("pompom");
 const bounceSound = document.getElementById("bounce-sound");
-const sizeBtn = document.getElementById("size-btn");
+const growBtn = document.getElementById("grow-btn");
 
 /* =====================
-   ESTADO POSICIÓN
+   POSICIÓN
 ===================== */
 let x = window.innerWidth / 2;
 let y = 100;
-
 let vx = 0;
 let vy = 0;
 
@@ -39,7 +38,7 @@ let offsetX = 0;
 let offsetY = 0;
 
 /* =====================
-   SONIDO (PITCH)
+   SONIDO
 ===================== */
 function playBounce(force) {
   bounceSound.currentTime = 0;
@@ -49,14 +48,11 @@ function playBounce(force) {
 }
 
 /* =====================
-   BOTÓN TAMAÑO
+   BOTÓN GORDO
 ===================== */
-sizeBtn.addEventListener("click", () => {
+growBtn.addEventListener("click", () => {
   scale += 0.2;
   if (scale > maxScale) scale = 1;
-
-  pompom.style.transform =
-    `scale(${scale}) rotate(${angle}deg)`;
 });
 
 /* =====================
@@ -64,54 +60,36 @@ sizeBtn.addEventListener("click", () => {
 ===================== */
 pompom.addEventListener("dragstart", e => e.preventDefault());
 
-/* =====================
-   AGARRAR
-===================== */
 pompom.addEventListener("mousedown", (e) => {
   dragging = true;
   pompom.style.cursor = "grabbing";
-
   offsetX = e.clientX - x;
   offsetY = e.clientY - y;
-
-  vx = 0;
-  vy = 0;
-  angularV = 0;
+  vx = vy = angularV = 0;
 });
 
-/* =====================
-   SOLTAR
-===================== */
 document.addEventListener("mouseup", () => {
   dragging = false;
   pompom.style.cursor = "grab";
 });
 
-/* =====================
-   MOVER
-===================== */
 document.addEventListener("mousemove", (e) => {
   if (!dragging) return;
-
   const newX = e.clientX - offsetX;
   const newY = e.clientY - offsetY;
-
   vx = newX - x;
   vy = newY - y;
-
   angularV = vx * 0.5;
-
   x = newX;
   y = newY;
 });
 
 /* =====================
-   LOOP PRINCIPAL
+   LOOP
 ===================== */
 function update() {
   if (!dragging) {
     vy += gravity;
-
     x += vx;
     y += vy;
 
@@ -119,36 +97,18 @@ function update() {
     angularV *= angularFriction;
     angle += angularV;
 
-    const w = pompom.offsetWidth * scale;
-    const h = pompom.offsetHeight * scale;
+    const w = pompom.offsetWidth;
+    const h = pompom.offsetHeight;
 
     const floor = window.innerHeight - h;
-    const ceiling = 0;
-    const wallL = 0;
     const wallR = window.innerWidth - w;
 
     if (y > floor) {
       y = floor;
       vy *= -bounce;
-      angularV += vx * 0.6;
       playBounce(Math.abs(vy));
     }
-
-    if (y < ceiling) {
-      y = ceiling;
-      vy *= -bounce;
-      playBounce(Math.abs(vy));
-    }
-
-    if (x < wallL) {
-      x = wallL;
-      vx *= -bounce;
-      angularV *= -1;
-      playBounce(Math.abs(vx));
-    }
-
-    if (x > wallR) {
-      x = wallR;
+    if (x < 0 || x > wallR) {
       vx *= -bounce;
       angularV *= -1;
       playBounce(Math.abs(vx));
@@ -157,8 +117,9 @@ function update() {
 
   pompom.style.left = x + "px";
   pompom.style.top = y + "px";
-  pompom.style.transform =
-    `scale(${scale}) rotate(${angle}deg)`;
+
+  /* 🔑 CLAVE: rotación + tamaño juntos */
+  pompom.style.transform = `rotate(${angle}deg) scale(${scale})`;
 
   requestAnimationFrame(update);
 }
