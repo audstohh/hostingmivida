@@ -1,0 +1,89 @@
+body {
+margin: 0;
+min-height: 100vh;
+
+cursor: url("src/cursor.png"),auto;
+
+background-image: url("src/fondo.jpg");
+background-repeat: repeat;
+background-size: 96px 96px;
+
+animation: moverFondo 15s linear infinite;
+}
+#fondo {
+position: fixed;
+inset: 0;
+z-index: 1;
+
+
+/* ESTA LÍNEA ES LA CLAVE */
+pointer-events: none;
+}
+
+
+
+@keyframes moverFondo {
+from { background-position: 0 0; }
+to { background-position: 400px 0; }
+}
+#contenido {
+position: fixed;
+inset: 0;
+
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
+
+transform: translateY(-120px); /* 👈 mueve hacia arriba */
+}
+
+#contenido h1 {
+  color: #4CAF50;          /* verde */
+  font-size: 48px;
+
+  /* borde negro alrededor del texto */
+  text-shadow:
+    -2px -2px 0 #000,
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000;
+}
+#contenido h1 {
+  color: #4CAF50;          /* verde */
+  font-size: 48px;
+
+  /* borde negro alrededor del texto */
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+#contenido p {
+  color: #4CAF50;          /* verde */
+  font-size: 24px;
+
+  /* borde negro alrededor del texto */
+  text-shadow:
+    -1px -1px 0 #000,
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+#botoncarta {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #f6e27f;
+  color: #2b2b2b;
+  text-decoration: none;
+  border: 2px solid black;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background: #ffe97a;
+}

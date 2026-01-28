@@ -1,0 +1,19 @@
+body {
+margin: 0;
+overflow: hidden;
+background: #fff04c;
+}
+
+
+/* Pompompurin */
+#pompom {
+position: fixed;
+width: 120px; /* ajustá según tu imagen */
+cursor: grab;
+
+
+/* CLAVE: matar drag fantasma */
+-webkit-user-drag: none;
+user-drag: none;
+user-select: none;
+}
